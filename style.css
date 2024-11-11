@@ -131,8 +131,8 @@ h3 {
   color: var(--blue);
 }
 
-/* MERCHANT + ITEM CARDS */
-.merchant, .item {
+/* MERCHANT + ITEM CARDS + COUPONS*/
+.merchant, .item, .coupon {
   align-items: center;
   background-color: #fff;
   border-radius: 8px;
@@ -145,7 +145,8 @@ h3 {
 }
 
 .merchant:hover,
-.item:hover {
+.item:hover,
+.coupon:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   transform: translateY(-5px);
 }
@@ -196,6 +197,9 @@ h3 {
   color: var(--red);
 }
 
+.inactive {
+  background-color: rgb(202, 202, 202);
+}
 /* STATUS MESSAGES */
 .success {
   color: var(--green);

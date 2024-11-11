@@ -36,6 +36,7 @@ submitMerchantButton.addEventListener('click', (event) => {
 //Global variables
 let merchants;
 let items;
+let coupons;
 
 //Page load data fetching
 Promise.all([fetchData('merchants'), fetchData('items')])
@@ -172,7 +173,7 @@ function displayItems(items) {
   firstHundredItems.forEach(item => {
     let merchant = findMerchant(item.attributes.merchant_id).attributes.name
     itemsView.innerHTML += `
-     <article class="item" id="item-${item.id}">
+    <article class="item" id="item-${item.id}">
           <img src="" alt="">
           <h2>${item.attributes.name}</h2>
           <p>${item.attributes.description}</p>
@@ -242,17 +243,57 @@ function getMerchantCoupons(event) {
     displayMerchantCoupons(couponData);
   })
 }
-
+//you're working here
 function displayMerchantCoupons(coupons) {
   show([couponsView])
   hide([merchantsView, itemsView])
-
-  couponsView.innerHTML = `
-    <p>Coupon data will go here.</p>
-  `
+  let merchantId = coupons["data"]["id"]
+  fetchData(`merchants/${merchantId}/coupons`)
+    .then(response => {
+      coupons = response["data"]
+      couponsView.innerHTML = ``
+      coupons.forEach((coupon) => {
+        if (coupon.attributes.status === "active"){
+        couponsView.innerHTML += displayCoupon(coupon)
+        }
+      })
+      coupons.forEach((coupon) => {
+        if (coupon.attributes.status === "inactive"){
+        couponsView.innerHTML += displayCoupon(coupon)
+        }
+      })
+    }
+  )
 }
 
+//you're working here
+function displayCoupon(coupon) {
+  if (coupon.attributes.percent_or_dollar === "dollar") {
+    return `
+    <article class="coupon ${coupon.attributes.status}" id="coupon-${coupon.id}">
+      <h3 class="coupon-name">${coupon.attributes.name}</h3>
+      <div class="coupon-attributes">
+        <p>Code: ${coupon.attributes.code}</p>
+        <p>Discount: $${coupon.attributes.off.toFixed(2)}</p>
+        <p>Status: ${coupon.attributes.status.toUpperCase()}</p>
+    </div>
+  </article>` }
+  else {
+    return `
+    <article class="coupon ${coupon.attributes.status}" id="coupon-${coupon.id}">
+      <h3 class="coupon-name">${coupon.attributes.name}</h3>
+      <div class="coupon-attributes">
+        <p>Code: ${coupon.attributes.code}</p>
+        <p>Discount: ${coupon.attributes.off}%</p>
+        <p>Status: ${coupon.attributes.status.toUpperCase()}</p>
+    </div>
+  </article>` 
+  }
+}
+//TODO - add helper to format off attribute
+
 //Helper Functions
+
 function show(elements) {
   elements.forEach(element => {
     element.classList.remove('hidden')
