@@ -200,6 +200,10 @@ h3 {
 .inactive {
   background-color: rgb(202, 202, 202);
 }
+
+#coupon-header {
+  padding-bottom: 10px;
+}
 /* STATUS MESSAGES */
 .success {
   color: var(--green);

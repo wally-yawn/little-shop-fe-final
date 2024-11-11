@@ -10,6 +10,7 @@ const merchantsNavButton = document.querySelector("#merchants-nav")
 const itemsNavButton = document.querySelector("#items-nav")
 const addNewButton = document.querySelector("#add-new-button")
 const showingText = document.querySelector("#showing-text")
+const merchantHeader = document.querySelector(".display-options")
 
 //Form elements
 const merchantForm = document.querySelector("#new-merchant-form")
@@ -143,8 +144,8 @@ function showMerchantsView() {
   showingText.innerText = "All Merchants"
   addRemoveActiveNav(merchantsNavButton, itemsNavButton)
   addNewButton.dataset.state = 'merchant'
-  show([merchantsView, addNewButton])
-  hide([itemsView])
+  show([merchantsView, addNewButton,merchantHeader])
+  hide([itemsView,couponsView])
   displayMerchants(merchants)
 }
 
@@ -246,12 +247,13 @@ function getMerchantCoupons(event) {
 //you're working here
 function displayMerchantCoupons(coupons) {
   show([couponsView])
-  hide([merchantsView, itemsView])
+  hide([merchantsView, itemsView, merchantHeader])
   let merchantId = coupons["data"]["id"]
   fetchData(`merchants/${merchantId}/coupons`)
     .then(response => {
       coupons = response["data"]
-      couponsView.innerHTML = ``
+      couponsView.innerHTML = `
+      <h3 id=coupon-header>Showing: <span id="showing-text">All Coupons for Merchant #${merchantId}</span></h3>`
       coupons.forEach((coupon) => {
         if (coupon.attributes.status === "active"){
         couponsView.innerHTML += displayCoupon(coupon)
