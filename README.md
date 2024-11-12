@@ -1,6 +1,5 @@
 # Little Shop - Front End
-Wally Wallace github - https://github.com/wally-yawn
-Wally Wallace LinkedIn - https://www.linkedin.com/in/wally--wallace/
+Wally Wallace github - https://github.com/wally-yawn - https://www.linkedin.com/in/wally--wallace/
 
 
 ### Abstract:
