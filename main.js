@@ -256,7 +256,6 @@ async function displayMerchantCoupons(couponData) {
       couponsView.innerHTML = `
       <h3 id=coupon-header>Showing: <span id="showing-text">All Coupons for Merchant #${merchantId}</span></h3>
       <p>Total Coupons: ${coupons.length}</p>
-
       <p>Total Invoices with coupons applied: ${count}</p>`
       coupons.forEach((coupon) => {
         if (coupon.attributes.status === "active"){
