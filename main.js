@@ -240,20 +240,24 @@ function getMerchantCoupons(event) {
 
   fetchData(`merchants/${merchantId}`)
   .then(couponData => {
-    console.log("Coupon data from fetch:", couponData)
+    // console.log("Coupon data from fetch:", couponData)
     displayMerchantCoupons(couponData);
   })
 }
 //you're working here
-function displayMerchantCoupons(coupons) {
+async function displayMerchantCoupons(couponData) {
   show([couponsView])
   hide([merchantsView, itemsView, merchantHeader])
-  let merchantId = coupons["data"]["id"]
+  let merchantId = couponData["data"]["id"]
+  var count = await invoiceswithCouponsApplied(merchantId)
   fetchData(`merchants/${merchantId}/coupons`)
     .then(response => {
       coupons = response["data"]
       couponsView.innerHTML = `
-      <h3 id=coupon-header>Showing: <span id="showing-text">All Coupons for Merchant #${merchantId}</span></h3>`
+      <h3 id=coupon-header>Showing: <span id="showing-text">All Coupons for Merchant #${merchantId}</span></h3>
+      <p>Total Coupons: ${coupons.length}</p>
+
+      <p>Total Invoices with coupons applied: ${count}</p>`
       coupons.forEach((coupon) => {
         if (coupon.attributes.status === "active"){
         couponsView.innerHTML += displayCoupon(coupon)
@@ -268,6 +272,17 @@ function displayMerchantCoupons(coupons) {
   )
 }
 
+async function invoiceswithCouponsApplied(merchantId){
+  var response = await fetchData(`merchants/${merchantId}/invoices`)
+  var allInvoices = response["data"]
+  // console.log("allInvoices: ", allInvoices)
+  var invoicesWithCoupons = allInvoices.filter((invoice) => {
+    console.log("invoice wihtin filter: ", invoice)
+    return invoice["attributes"].coupon_id !== null
+  })
+  console.log("invoicesWithCoupons: ", invoicesWithCoupons)
+  return invoicesWithCoupons.length
+}
 //you're working here
 function displayCoupon(coupon) {
   if (coupon.attributes.percent_or_dollar === "dollar") {
