@@ -240,11 +240,11 @@ function getMerchantCoupons(event) {
 
   fetchData(`merchants/${merchantId}`)
   .then(couponData => {
-    // console.log("Coupon data from fetch:", couponData)
+
     displayMerchantCoupons(couponData);
   })
 }
-//you're working here
+
 async function displayMerchantCoupons(couponData) {
   show([couponsView])
   hide([merchantsView, itemsView, merchantHeader])
@@ -274,15 +274,12 @@ async function displayMerchantCoupons(couponData) {
 async function invoiceswithCouponsApplied(merchantId){
   var response = await fetchData(`merchants/${merchantId}/invoices`)
   var allInvoices = response["data"]
-  // console.log("allInvoices: ", allInvoices)
   var invoicesWithCoupons = allInvoices.filter((invoice) => {
-    console.log("invoice wihtin filter: ", invoice)
     return invoice["attributes"].coupon_id !== null
   })
-  console.log("invoicesWithCoupons: ", invoicesWithCoupons)
   return invoicesWithCoupons.length
 }
-//you're working here
+
 function displayCoupon(coupon) {
   if (coupon.attributes.percent_or_dollar === "dollar") {
     return `
@@ -306,7 +303,6 @@ function displayCoupon(coupon) {
   </article>` 
   }
 }
-//TODO - add helper to format off attribute
 
 //Helper Functions
 
